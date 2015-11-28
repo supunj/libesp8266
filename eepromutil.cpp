@@ -2,9 +2,8 @@
  * eepromutil.cpp
  *
  *  Created on: Nov 16, 2015
- *      Author: sudiv
+ *      Author: Supun Jayathilake (supunj@gmail.com)
  */
-
 #include "eepromutil.h"
 #include <EEPROM.h>
 #include <ESP8266WiFi.h>
@@ -12,7 +11,7 @@
 EEPROMUtil::EEPROMUtil(int size) :
 		_eeprom_size(size) {
 	EEPROM.begin(_eeprom_size);
-	Serial.println("_eeprom_size");
+	//Serial.println("_eeprom_size");
 }
 
 EEPROMUtil::~EEPROMUtil() {

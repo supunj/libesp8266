@@ -1,3 +1,9 @@
+/*
+ * esp8266_common.ino
+ *
+ *  Created on: Nov 16, 2015
+ *      Author: Supun Jayathilake (supunj@gmail.com)
+ */
 #include "esp8266util.h"
 #include "eepromutil.h"
 
@@ -16,7 +22,10 @@ void setup() {
 	esp8266.startWebServer();
 	//String res1 = esp8266.httpGET("httpbin.org", 80, "/ip", 50);
 	//Serial.print(res1);
-	String res2 = esp8266.httpPOST("httpbin.org", 80, "/post", "dfsfsdghdsfjghjkdfhgjkdsf475483759483759834752312312hgdkjhfgdgjh&^%#^$^^^@#$@!$#^%!@#$@%^#!@#", 1000);
+	String res2 =
+			esp8266.httpPOST("httpbin.org", 80, "/post",
+					"dfsfsdghdsfjghjkdfhgjkdsf475483759483759834752312312hgdkjhfgdgjh&^%#^$^^^@#$@!$#^%!@#$@%^#!@#",
+					1000);
 	Serial.print(res2);
 
 	EEPROMUtility.clear();

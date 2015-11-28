@@ -2,7 +2,7 @@
  * CommonESP8266.cpp
  *
  *  Created on: Nov 13, 2015
- *      Author: sudiv
+ *      Author: Supun Jayathilake (supunj@gmail.com)
  */
 
 #include <ESP8266WiFi.h>

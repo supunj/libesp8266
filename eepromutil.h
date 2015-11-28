@@ -2,9 +2,8 @@
  * eepromutil.h
  *
  *  Created on: Nov 16, 2015
- *      Author: sudiv
+ *      Author: Supun Jayathilake (supunj@gmail.com)
  */
-
 #ifndef EEPROMUTIL_H_
 #define EEPROMUTIL_H_
 

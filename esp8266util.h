@@ -2,7 +2,7 @@
  * CommonESP8266.h
  *
  *  Created on: Nov 13, 2015
- *      Author: sudiv
+ *      Author: Supun Jayathilake (supunj@gmail.com)
  */
 
 #ifndef ESP8266UTIL_H_
