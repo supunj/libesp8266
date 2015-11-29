@@ -80,7 +80,7 @@ void EEPROMUtil::clear() {
 	for (int i = 0; i < _eeprom_size; ++i) {
 		EEPROM.write(i, 0);
 	}
-	//EEPROM.commit();
+	EEPROM.commit();
 	delay(5);
 	//Serial.println("eeprom cleared");
 }
