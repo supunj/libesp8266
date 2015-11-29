@@ -91,28 +91,27 @@ bool ESP8266Util::startWebServer() {
  */
 void ESP8266Util::handleRoot() {
 	digitalWrite(indicator_led, 1);
-	char temp[400];
+	char temp[1000];
 	int sec = millis() / 1000;
 	int min = sec / 60;
 	int hr = min / 60;
 
-	snprintf(temp, 400,
-
+	snprintf(temp, 1000,
 			"<html>\
-  <head>\
-    <meta http-equiv='refresh' content='5'/>\
-    <title>ESP8266 Demo</title>\
-    <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
-    </style>\
-  </head>\
-  <body>\
-    <h1>Hello from ESP8266!</h1>\
-    <p>Uptime: %02d:%02d:%02d</p>\
-    <img src=\"/test.svg\" />\
-  </body>\
-</html>",
-
+			  <head>\
+				<meta http-equiv='refresh' content='5'/>\
+				<title>ESP8266 Based IoT Platform</title>\
+			   </head>\
+			  <body>\
+				<h1>ESP8266 Based IoT Platform</h1>\
+					<p><a href=\"/reset\" target=\"_blank\">Reset the device</a></p>\
+					<p><a href=\"/restart\" target=\"_blank\">Re-start the device</a></p>\
+					<p><a href=\"/store\" target=\"_blank\">Store value on EEPROM</a></p>\
+					<p><a href=\"/readall\" target=\"_blank\">Read all the values on EEPROM</a></p>\
+					<p><a href=\"/clear\" target=\"_blank\">Clear EEPROM</a></p>\
+					<p>Uptime: %02d:%02d:%02d</p>\
+			  </body>\
+			</html>",
 			hr, min % 60, sec % 60);
 	server.send(200, "text/html", temp);
 	digitalWrite(indicator_led, 0);
@@ -123,7 +122,7 @@ void ESP8266Util::handleRoot() {
  */
 void ESP8266Util::handleNotFound() {
 	digitalWrite(indicator_led, 1);
-	String message = "File Not Found\n\n";
+	String message = "Resource not found\n\n";
 	message += "URI: ";
 	message += server.uri();
 	message += "\nMethod: ";
@@ -235,6 +234,41 @@ String ESP8266Util::httpPOST(char* host, int port, String uri, String payload,
 }
 
 void ESP8266Util::store() {
+	digitalWrite(indicator_led, 1);
+	char temp[1000];
+	int sec = millis() / 1000;
+	int min = sec / 60;
+	int hr = min / 60;
+
+	snprintf(temp, 1000,
+			"<html>\
+				  <head>\
+					<title>ESP8266 Based IoT Platform</title>\
+				   </head>\
+				  <body>\
+						<h1>Store key/value in the EEPROM</h1>\
+						<form action=\"/eepromstore\">\
+						<table>\
+						<tbody>\
+							<tr>\
+								<td>Key</td>\
+								<td><input type=\"text\" name=\"key\"/></td>\
+							</tr>\
+							<tr>\
+								<td>Value</td>\
+								<td><input type=\"text\" name=\"value\"/></td>\
+							</tr>\
+							<tr>\
+								<td></td>\
+								<td><input type=\"submit\" name=\"store\" value=\"Store\"/></td>\
+							</tr>\
+						</tbody>\
+						</table>\
+				  </body>\
+				</html>");
+	server.send(200, "text/html", temp);
+	digitalWrite(indicator_led, 0);
+
 	EEPROMUtility.put("key1", "test");
 	server.send(200, "text/plain", "key/value stored");
 	Serial.println(EEPROMUtility.get("key1"));
