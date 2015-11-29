@@ -11,13 +11,14 @@ char* ssid = "MIFI-19B2";
 char* password = "1234567890";
 const int led = 2;
 
-ESP8266Util esp8266(ssid, password);
+ESP8266Util esp8266(ssid, password, 2, 115200);
 
 //The setup function is called once at startup of the sketch
 void setup() {
+	esp8266.start();
 	pinMode(led, OUTPUT);
 	digitalWrite(led, 0);
-	Serial.begin(115200);
+	//Serial.begin(115200);
 	esp8266.wifiConnect();
 	esp8266.startWebServer();
 	//String res1 = esp8266.httpGET("httpbin.org", 80, "/ip", 50);
@@ -28,9 +29,9 @@ void setup() {
 					1000);
 	Serial.print(res2);
 
-	EEPROMUtility.clear();
+	/*EEPROMUtility.clear();
 	EEPROMUtility.put("key1", "value1");
-	Serial.println(EEPROMUtility.get("key1"));
+	Serial.println(EEPROMUtility.get("key1"));*/
 }
 
 // The loop function is called in an endless loop

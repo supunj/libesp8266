@@ -10,6 +10,7 @@
 
 #include <IPAddress.h>
 #include <WString.h>
+#include "eepromutil.h"
 
 class ESP8266Util {
 private:
@@ -17,12 +18,17 @@ private:
 	char* password;
 	IPAddress ip;
 	int indicator_led;
+	int serial_port;
+	int eeprom_size;
 	void handleRoot();
 	void handleNotFound();
 
 public:
-	ESP8266Util(char* ssid, char* passwords, const int ind_led = 2);
+	ESP8266Util(char* ssid = "", char* passwords = "", const int ind_led = 2,
+			const int srl_port = 115200, const int rom_size = DEF_EEPROM_SIZE);
 	virtual ~ESP8266Util();
+	// initialize
+	void start();
 	// connect to wifi
 	void wifiConnect();
 	// keep on updating dns
@@ -44,6 +50,7 @@ public:
 	void store();
 	String readAll();
 	void clearEEPROM();
+	void eepromStore();
 };
 
 #endif /* ESP8266UTIL_H_ */

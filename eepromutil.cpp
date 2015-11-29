@@ -8,35 +8,41 @@
 #include <EEPROM.h>
 #include <ESP8266WiFi.h>
 
-EEPROMUtil::EEPROMUtil(int size) :
+EEPROMUtil::EEPROMUtil(const int size) :
 		_eeprom_size(size) {
-	EEPROM.begin(_eeprom_size);
-	//Serial.println("_eeprom_size");
 }
 
 EEPROMUtil::~EEPROMUtil() {
+	EEPROM.end();
+}
 
+void EEPROMUtil::start() {
+	EEPROM.begin(_eeprom_size);
+	Serial.println("eeprom started - " + String(_eeprom_size));
 }
 
 void EEPROMUtil::put(String key, String value) {
 	String str = key + '=' + value + '\n';
 	int address = getNextAddress();
+	Serial.println(address);
 	for (int j = 0; j < str.length(); ++j) {
 		EEPROM.write(address, str[j]);
 		address++;
 	}
+	delay(10);
 	EEPROM.commit();
+	Serial.println("stored in the eeprom");
 }
 
 String EEPROMUtil::readAll() {
 	String tmp;
-	char ch = char(EEPROM.read(0));
-	if (ch == '\0') {
+	char ch = char(EEPROM.read(startAddress));
+	if (ch == emptyChar) {
 		tmp = "empty";
 	} else {
-		for (int k = 0; k < _eeprom_size; ++k) {
+		for (int k = startAddress; k < _eeprom_size; ++k) {
 			ch = char(EEPROM.read(k));
-			if (ch == '\0') {
+			if (ch == emptyChar) {
 				break;
 			} else {
 				tmp += ch;
@@ -48,7 +54,7 @@ String EEPROMUtil::readAll() {
 
 String EEPROMUtil::get(String key) {
 	String item = "";
-	for (int k = 0; k < _eeprom_size; ++k) {
+	for (int k = startAddress; k < _eeprom_size; ++k) {
 		char ch = char(EEPROM.read(k));
 
 		if (ch == '\n') {
@@ -66,23 +72,22 @@ String EEPROMUtil::get(String key) {
 }
 
 int EEPROMUtil::getNextAddress() {
-	int current = 0;
-	for (int k = 0; k < _eeprom_size; ++k) {
+	int current = startAddress;
+	for (int k = startAddress; k < _eeprom_size; ++k) {
 		if (char(EEPROM.read(k)) == '\n') {
 			current = k;
 		}
 	}
-	//Serial.println(current + 1);
-	return current + 1;
+	return current == 1 ? current : (current + 1);
 }
 
 void EEPROMUtil::clear() {
 	for (int i = 0; i < _eeprom_size; ++i) {
-		EEPROM.write(i, 0);
+		EEPROM.write(i, emptyChar);
 	}
+	// don't know why we need to do it but a new line character apparently has to be written first
+	EEPROM.write(0, '\n');
 	EEPROM.commit();
-	delay(5);
-	//Serial.println("eeprom cleared");
+	delay(10);
+	Serial.println("eeprom cleared");
 }
-
-EEPROMUtil EEPROMUtility(DEF_EEPROM_SIZE);

@@ -13,19 +13,20 @@
 
 class EEPROMUtil {
 private:
+	const int startAddress = 1;
 	int getNextAddress();
+	char emptyChar = '\0';
 public:
-	EEPROMUtil(int size);
+	EEPROMUtil(const int size = DEF_EEPROM_SIZE);
 	virtual ~EEPROMUtil();
 
 	void put(String key, String value);
 	String get(String key);
 	String readAll();
 	void clear();
+	void start();
 protected:
 	int _eeprom_size;
 };
-
-extern EEPROMUtil EEPROMUtility;
 
 #endif /* EEPROMUTIL_H_ */

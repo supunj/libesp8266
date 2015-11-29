@@ -13,13 +13,24 @@
 #include "esp8266util.h"
 //#include <ArduinoJson.h>
 #include "eepromutil.h"
+#include <EEPROM.h>
 
 MDNSResponder mdns;
 ESP8266WebServer server(80);
 WiFiClient client;
+EEPROMUtil *eepromUtility;
 
-ESP8266Util::ESP8266Util(char* sid, char* pwd, const int ind_led) :
-		ssid(sid), password(pwd), indicator_led(ind_led) {
+ESP8266Util::ESP8266Util(char* sid, char* pwd, const int ind_led,
+		const int srl_port, const int rom_size) :
+		ssid(sid), password(pwd), indicator_led(ind_led), serial_port(srl_port), eeprom_size(
+				rom_size) {
+}
+
+void ESP8266Util::start() {
+	Serial.begin(serial_port);
+	Serial.println("starting eeprom");
+	eepromUtility = new EEPROMUtil(eeprom_size);
+	eepromUtility->start();
 }
 
 /**
@@ -73,11 +84,14 @@ bool ESP8266Util::startWebServer() {
 	std::function<String(void)> readAll(std::bind(&ESP8266Util::readAll, this));
 	std::function<void(void)> clearEEPROM(
 			std::bind(&ESP8266Util::clearEEPROM, this));
+	std::function<void(void)> eepromStore(
+			std::bind(&ESP8266Util::eepromStore, this));
 
 	server.on("/", handleRoot);
 	server.on("/reset", resetDevice);
 	server.on("/restart", restartDevice);
 	server.on("/store", store);
+	server.on("/eepromstore", eepromStore);
 	server.on("/readall", readAll);
 	server.on("/clear", clearEEPROM);
 	server.onNotFound(handleNotFound);
@@ -247,7 +261,7 @@ void ESP8266Util::store() {
 				   </head>\
 				  <body>\
 						<h1>Store key/value in the EEPROM</h1>\
-						<form action=\"/eepromstore\">\
+						<form action=\"/eepromstore\" method=\"post\">\
 						<table>\
 						<tbody>\
 							<tr>\
@@ -268,22 +282,28 @@ void ESP8266Util::store() {
 				</html>");
 	server.send(200, "text/html", temp);
 	digitalWrite(indicator_led, 0);
-
-	EEPROMUtility.put("key1", "test");
-	server.send(200, "text/plain", "key/value stored");
-	Serial.println(EEPROMUtility.get("key1"));
 }
 
 String ESP8266Util::readAll() {
-	String str = EEPROMUtility.readAll();
+	char temp[1000];
+	String str = eepromUtility->readAll();
+	str.toCharArray(temp, 1000);
+	snprintf(temp, 1000, temp);
 	Serial.println(str);
-	server.send(200, "text/plain", str);
+	server.send(200, "text/plain", temp);
 	return str;
 }
 
 void ESP8266Util::clearEEPROM() {
-	EEPROMUtility.clear();
+	eepromUtility->clear();
 	server.send(200, "text/plain", "EEPROM cleared");
+}
+
+void ESP8266Util::eepromStore() {
+	String key = server.arg("key");
+	String value = server.arg("value");
+	eepromUtility->put(key, value);
+	server.send(200, "text/plain", "key/value stored");
 }
 
 ESP8266Util::~ESP8266Util() {
