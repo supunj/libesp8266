@@ -57,6 +57,11 @@
 			<locationURI>ArduinoHardwareLibPath/esp8266</locationURI>
 		</link>
 		<link>
+			<name>Libraries/pubsubclient-2.4</name>
+			<type>2</type>
+			<locationURI>ArduinoLibPath/pubsubclient-2.4</locationURI>
+		</link>
+		<link>
 			<name>arduino/core</name>
 			<type>2</type>
 			<locationURI>ArduinoPlatformPath/esp8266</locationURI>
