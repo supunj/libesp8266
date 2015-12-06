@@ -7,6 +7,7 @@
 #include "eepromutil.h"
 #include <EEPROM.h>
 #include <ESP8266WiFi.h>
+#include <vector>
 
 EEPROMUtil::EEPROMUtil(const int size) :
 		_eeprom_size(size) {
@@ -16,15 +17,32 @@ EEPROMUtil::~EEPROMUtil() {
 	EEPROM.end();
 }
 
+/**
+ * Initialize EEPROM
+ */
 void EEPROMUtil::start() {
 	EEPROM.begin(_eeprom_size);
 	Serial.println("eeprom started - " + String(_eeprom_size));
 }
 
+/**
+ * Store a key/value pair
+ */
 void EEPROMUtil::put(String key, String value) {
-	String str = key + '=' + value + '\n';
+	if (get(key) == "") {
+		write(key, value);
+	} else {
+		Serial.println("key exists. updating...");
+		update(key, value);
+	}
+}
+
+/**
+ * Physically write to EEPROM
+ */
+void EEPROMUtil::write(const String& key, const String& value) {
+	String str = key + splitChar + value + newLineChar;
 	int address = getNextAddress();
-	Serial.println(address);
 	for (int j = 0; j < str.length(); ++j) {
 		EEPROM.write(address, str[j]);
 		address++;
@@ -34,6 +52,9 @@ void EEPROMUtil::put(String key, String value) {
 	Serial.println("stored in the eeprom");
 }
 
+/**
+ * Read all key/values
+ */
 String EEPROMUtil::readAll() {
 	String tmp;
 	char ch = char(EEPROM.read(startAddress));
@@ -52,15 +73,19 @@ String EEPROMUtil::readAll() {
 	return tmp;
 }
 
+/**
+ * Get a value for a given key
+ */
 String EEPROMUtil::get(String key) {
 	String item = "";
 	for (int k = startAddress; k < _eeprom_size; ++k) {
 		char ch = char(EEPROM.read(k));
 
-		if (ch == '\n') {
+		if (ch == newLineChar) {
 			// check item
-			if (item.substring(0, item.indexOf('=')) == key) {
-				return item.substring((item.indexOf('=') + 1), item.length());
+			if (item.substring(0, item.indexOf(splitChar)) == key) {
+				return item.substring((item.indexOf(splitChar) + 1),
+						item.length());
 			} else {
 				item = "";
 			}
@@ -71,22 +96,60 @@ String EEPROMUtil::get(String key) {
 	return "";
 }
 
+/**
+ * Get the next address to store
+ */
 int EEPROMUtil::getNextAddress() {
 	int current = startAddress;
 	for (int k = startAddress; k < _eeprom_size; ++k) {
-		if (char(EEPROM.read(k)) == '\n') {
+		if (char(EEPROM.read(k)) == newLineChar) {
 			current = k;
 		}
 	}
-	return current == 1 ? current : (current + 1);
+	return current == startAddress ? current : (current + 1);
 }
 
+/**
+ * Update the value for a given key
+ */
+void EEPROMUtil::update(const String& key, const String& value) {
+	std::vector<String> items;
+	String item = "";
+	for (int k = startAddress; k < _eeprom_size; ++k) {
+		char ch = char(EEPROM.read(k));
+
+		if (ch == newLineChar) {
+			// check item
+			if (item.substring(0, item.indexOf(splitChar)) == key) {
+				items.push_back(key + splitChar + value);
+			} else {
+				items.push_back(item);
+			}
+			item = "";
+		} else {
+			item += ch;
+		}
+	}
+
+	// clear all
+	clear();
+
+	// write the vector to the EEPROM
+	for (auto &i : items) {
+		write(i.substring(0, i.indexOf(splitChar)),
+				i.substring((i.indexOf(splitChar) + 1), i.length()));
+	}
+}
+
+/**
+ * Clear the EEPROM
+ */
 void EEPROMUtil::clear() {
 	for (int i = 0; i < _eeprom_size; ++i) {
 		EEPROM.write(i, emptyChar);
 	}
 	// don't know why we need to do it but a new line character apparently has to be written first
-	EEPROM.write(0, '\n');
+	EEPROM.write(0, newLineChar);
 	EEPROM.commit();
 	delay(10);
 	Serial.println("eeprom cleared");

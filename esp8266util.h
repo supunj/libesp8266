@@ -20,12 +20,13 @@ private:
 	int indicator_led;
 	int serial_port;
 	int eeprom_size;
+	//char* mqtt_server;
 	void handleRoot();
 	void handleNotFound();
 
 public:
 	ESP8266Util(char* ssid = "", char* passwords = "", const int ind_led = 2,
-			const int srl_port = 115200, const int rom_size = DEF_EEPROM_SIZE);
+			const int rom_size = DEF_EEPROM_SIZE, const int srl_port = 115200);
 	virtual ~ESP8266Util();
 	// initialize
 	void start();

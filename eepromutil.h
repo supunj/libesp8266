@@ -15,7 +15,12 @@ class EEPROMUtil {
 private:
 	const int startAddress = 1;
 	int getNextAddress();
-	char emptyChar = '\0';
+	static const char emptyChar = '\0';
+	static const char newLineChar = '\n';
+	static const char splitChar = '=';
+
+	void update(const String& key, const String& value);
+	void write(const String& key, const String& value);
 public:
 	EEPROMUtil(const int size = DEF_EEPROM_SIZE);
 	virtual ~EEPROMUtil();

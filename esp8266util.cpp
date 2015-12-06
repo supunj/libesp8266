@@ -14,6 +14,7 @@
 //#include <ArduinoJson.h>
 #include "eepromutil.h"
 #include <EEPROM.h>
+//#include <PubSubClient.h>
 
 MDNSResponder mdns;
 ESP8266WebServer server(80);
@@ -21,16 +22,17 @@ WiFiClient client;
 EEPROMUtil *eepromUtility;
 
 ESP8266Util::ESP8266Util(char* sid, char* pwd, const int ind_led,
-		const int srl_port, const int rom_size) :
-		ssid(sid), password(pwd), indicator_led(ind_led), serial_port(srl_port), eeprom_size(
-				rom_size) {
+		const int rom_size, const int srl_port) :
+		ssid(sid), password(pwd), indicator_led(ind_led), eeprom_size(rom_size), serial_port(
+				srl_port) {
 }
 
 void ESP8266Util::start() {
 	Serial.begin(serial_port);
-	Serial.println("starting eeprom");
+	Serial.println("serial output on - " + String(serial_port));
 	eepromUtility = new EEPROMUtil(eeprom_size);
 	eepromUtility->start();
+	Serial.println("EEPROM initialized");
 }
 
 /**
@@ -248,12 +250,7 @@ String ESP8266Util::httpPOST(char* host, int port, String uri, String payload,
 }
 
 void ESP8266Util::store() {
-	digitalWrite(indicator_led, 1);
 	char temp[1000];
-	int sec = millis() / 1000;
-	int min = sec / 60;
-	int hr = min / 60;
-
 	snprintf(temp, 1000,
 			"<html>\
 				  <head>\
@@ -281,7 +278,6 @@ void ESP8266Util::store() {
 				  </body>\
 				</html>");
 	server.send(200, "text/html", temp);
-	digitalWrite(indicator_led, 0);
 }
 
 String ESP8266Util::readAll() {
