@@ -27,11 +27,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/ArduinoJson</name>
-			<type>2</type>
-			<locationURI>ArduinoLibPath/ArduinoJson</locationURI>
-		</link>
-		<link>
 			<name>Libraries/EEPROM</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/EEPROM</locationURI>
@@ -55,11 +50,6 @@
 			<name>Libraries/esp8266</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/esp8266</locationURI>
-		</link>
-		<link>
-			<name>Libraries/pubsubclient-2.4</name>
-			<type>2</type>
-			<locationURI>ArduinoLibPath/pubsubclient-2.4</locationURI>
 		</link>
 		<link>
 			<name>arduino/core</name>
