@@ -1,6 +1,4 @@
 /*
- * eepromutil.h
- *
  *  Created on: Nov 16, 2015
  *      Author: Supun Jayathilake (supunj@gmail.com)
  */

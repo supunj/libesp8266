@@ -1,38 +1,40 @@
 /*
- * CommonESP8266.cpp
- *
  *  Created on: Nov 13, 2015
  *      Author: Supun Jayathilake (supunj@gmail.com)
  */
 
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h>
 #include <ESP8266mDNS.h>
 #include <ESP8266WebServer.h>
-#include "base64.h"
-#include "esp8266util.h"
 //#include <ArduinoJson.h>
+#include <Time.h>
+#include <time.h>
+
+#include "esp8266util.h"
+#include "ntpclient.h"
 #include "eepromutil.h"
-#include <EEPROM.h>
+#include "base64.h"
+#include "serial_logger.h"
+
 //#include <PubSubClient.h>
 
 MDNSResponder mdns;
 ESP8266WebServer server(80);
 WiFiClient client;
 EEPROMUtil *eepromUtility;
+NTPClient *ntpClient;
+WiFiUDP udp;
 
 ESP8266Util::ESP8266Util(char* sid, char* pwd, const int ind_led,
-		const int rom_size, const int srl_port) :
-		ssid(sid), password(pwd), indicator_led(ind_led), eeprom_size(rom_size), serial_port(
-				srl_port) {
+		const int rom_size) :
+		ssid(sid), password(pwd), indicator_led(ind_led), eeprom_size(rom_size) {
 }
 
 void ESP8266Util::start() {
-	Serial.begin(serial_port);
-	Serial.println("serial output on - " + String(serial_port));
 	eepromUtility = new EEPROMUtil(eeprom_size);
 	eepromUtility->start();
-	Serial.println("EEPROM initialized");
+	Log.info("EEPROM initialized");
+
+	ntpClient = new NTPClient();
 }
 
 /**
@@ -44,25 +46,26 @@ void ESP8266Util::wifiConnect() {
 
 	// initiate
 	WiFi.begin(ssid, password);
-	Serial.println("");
 
 	// Wait for connection
+	Log.info("connecting to AP.....");
 	while (WiFi.status() != WL_CONNECTED) {
 		delay(500);
-		Serial.print(".");
 	}
 
 	// get the ip address
 	ip = WiFi.localIP();
-	Serial.println("");
-	Serial.print("Connected to ");
-	Serial.println(ssid);
-	Serial.print("IP address: ");
-	Serial.println(ip);
+	Log.info("connected to " + (String) ssid);
+	Log.info("IP address: " + ipToString(ip));
 
 	if (mdns.begin("esp8266", ip)) {
-		Serial.println("MDNS responder started");
+		Log.info("MDNS responder started");
 	}
+
+	// time synchronization
+	setSyncInterval(60);
+	setSyncProvider((getExternalTime) getNTPTime);
+	Log.info("time synchronized");
 }
 
 /**
@@ -98,7 +101,7 @@ bool ESP8266Util::startWebServer() {
 	server.on("/clear", clearEEPROM);
 	server.onNotFound(handleNotFound);
 	server.begin();
-	Serial.println("HTTP server started");
+	Log.info("HTTP server started");
 	return true;
 }
 
@@ -126,9 +129,10 @@ void ESP8266Util::handleRoot() {
 					<p><a href=\"/readall\" target=\"_blank\">Read all the values on EEPROM</a></p>\
 					<p><a href=\"/clear\" target=\"_blank\">Clear EEPROM</a></p>\
 					<p>Uptime: %02d:%02d:%02d</p>\
+			        <p>Time: %s GMT</p>\
 			  </body>\
 			</html>",
-			hr, min % 60, sec % 60);
+			hr, min % 60, sec % 60, getStrDateTime().c_str());
 	server.send(200, "text/html", temp);
 	digitalWrite(indicator_led, 0);
 }
@@ -187,7 +191,7 @@ void ESP8266Util::restartDevice() {
  */
 String ESP8266Util::httpGET(char* host, int port, String uri, const int wait) {
 	if (!client.connect(host, port)) {
-		Serial.println("connection failed");
+		Log.info("connection failed");
 		return "";
 	}
 
@@ -206,9 +210,7 @@ String ESP8266Util::httpGET(char* host, int port, String uri, const int wait) {
 		response.concat(client.readStringUntil('\r'));
 	}
 
-	//Serial.print(response);
-	//Serial.println();
-	Serial.println("closing connection");
+	Log.info("closing connection");
 	return response;
 }
 
@@ -218,7 +220,7 @@ String ESP8266Util::httpGET(char* host, int port, String uri, const int wait) {
 String ESP8266Util::httpPOST(char* host, int port, String uri, String payload,
 		const int wait) {
 	if (!client.connect(host, port)) {
-		Serial.println("connection failed");
+		Log.info("connection failed");
 		return "";
 	}
 
@@ -243,9 +245,7 @@ String ESP8266Util::httpPOST(char* host, int port, String uri, String payload,
 		response.concat(client.readStringUntil('\r'));
 	}
 
-	//Serial.print(response);
-	//Serial.println();
-	Serial.println("closing connection");
+	Log.info("closing connection");
 	return response;
 }
 
@@ -285,7 +285,7 @@ String ESP8266Util::readAll() {
 	String str = eepromUtility->readAll();
 	str.toCharArray(temp, 1000);
 	snprintf(temp, 1000, temp);
-	Serial.println(str);
+	Log.info(str);
 	server.send(200, "text/plain", temp);
 	return str;
 }
@@ -300,6 +300,27 @@ void ESP8266Util::eepromStore() {
 	String value = server.arg("value");
 	eepromUtility->put(key, value);
 	server.send(200, "text/plain", "key/value stored");
+}
+
+time_t ESP8266Util::getNTPTime() {
+	return (time_t) ntpClient->ntpUnixTime(udp);
+}
+
+uint32_t ESP8266Util::getDateTime() {
+	return (uint32_t) now();
+}
+
+String ESP8266Util::getStrDateTime() {
+	String dt = String(month()) + "/" + String(day()) + "/" + String(year())
+			+ " " + String(hour()) + ":" + String(minute()) + ":"
+			+ String(second());
+	return dt;
+}
+
+String ESP8266Util::ipToString(IPAddress ip) {
+	char strIP[24];
+	sprintf(strIP, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
+	return strIP;
 }
 
 ESP8266Util::~ESP8266Util() {

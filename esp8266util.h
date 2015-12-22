@@ -1,6 +1,4 @@
 /*
- * CommonESP8266.h
- *
  *  Created on: Nov 13, 2015
  *      Author: Supun Jayathilake (supunj@gmail.com)
  */
@@ -10,7 +8,12 @@
 
 #include <IPAddress.h>
 #include <WString.h>
+
 #include "eepromutil.h"
+
+enum Sensor {
+	Temperature, Humidity, Motion
+};
 
 class ESP8266Util {
 private:
@@ -18,7 +21,6 @@ private:
 	char* password;
 	IPAddress ip;
 	int indicator_led;
-	int serial_port;
 	int eeprom_size;
 	//char* mqtt_server;
 	void handleRoot();
@@ -26,7 +28,7 @@ private:
 
 public:
 	ESP8266Util(char* ssid = "", char* passwords = "", const int ind_led = 2,
-			const int rom_size = DEF_EEPROM_SIZE, const int srl_port = 115200);
+			const int rom_size = DEF_EEPROM_SIZE);
 	virtual ~ESP8266Util();
 	// initialize
 	void start();
@@ -42,16 +44,31 @@ public:
 	void resetDevice();
 	// resset the device
 	void restartDevice();
+
 	// call https end point
 	String httpGET(char* host, int port, String uri, const int wait = 10);
 	// call https end point
 	String httpPOST(char* host, int port, String uri, String payload,
 			const int wait = 10);
+
 	// write/read data to and from EEPROM
 	void store();
 	String readAll();
 	void clearEEPROM();
 	void eepromStore();
+
+	// Json handling
+	String getJson(Sensor sensor);
+
+	// get NTP date/time
+	static time_t getNTPTime();
+
+	// get date/time
+	uint32_t getDateTime();
+	String getStrDateTime();
+
+	// converts the IPAddress to String
+	String ipToString(IPAddress ip);
 };
 
 #endif /* ESP8266UTIL_H_ */

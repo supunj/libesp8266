@@ -27,6 +27,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Libraries/ArduinoJson</name>
+			<type>2</type>
+			<locationURI>ArduinoLibPath/ArduinoJson</locationURI>
+		</link>
+		<link>
 			<name>Libraries/EEPROM</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/EEPROM</locationURI>
@@ -45,6 +50,11 @@
 			<name>Libraries/ESP8266mDNS</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/ESP8266mDNS</locationURI>
+		</link>
+		<link>
+			<name>Libraries/Time-master</name>
+			<type>2</type>
+			<locationURI>ArduinoLibPath/Time-master</locationURI>
 		</link>
 		<link>
 			<name>Libraries/esp8266</name>

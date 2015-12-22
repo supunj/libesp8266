@@ -1,13 +1,13 @@
 /*
- * eepromutil.cpp
- *
  *  Created on: Nov 16, 2015
  *      Author: Supun Jayathilake (supunj@gmail.com)
  */
-#include "eepromutil.h"
 #include <EEPROM.h>
-#include <ESP8266WiFi.h>
+#include <Arduino.h>
 #include <vector>
+
+#include "eepromutil.h"
+#include "serial_logger.h"
 
 EEPROMUtil::EEPROMUtil(const int size) :
 		_eeprom_size(size) {
@@ -22,7 +22,7 @@ EEPROMUtil::~EEPROMUtil() {
  */
 void EEPROMUtil::start() {
 	EEPROM.begin(_eeprom_size);
-	Serial.println("eeprom started - " + String(_eeprom_size));
+	Log.info("eeprom started - " + String(_eeprom_size));
 }
 
 /**
@@ -32,7 +32,7 @@ void EEPROMUtil::put(String key, String value) {
 	if (get(key) == "") {
 		write(key, value);
 	} else {
-		Serial.println("key exists. updating...");
+		Log.info("key exists. updating...");
 		update(key, value);
 	}
 }
@@ -49,7 +49,7 @@ void EEPROMUtil::write(const String& key, const String& value) {
 	}
 	delay(10);
 	EEPROM.commit();
-	Serial.println("stored in the eeprom");
+	Log.info("stored in the eeprom");
 }
 
 /**
@@ -152,5 +152,5 @@ void EEPROMUtil::clear() {
 	EEPROM.write(0, newLineChar);
 	EEPROM.commit();
 	delay(10);
-	Serial.println("eeprom cleared");
+	Log.info("eeprom cleared");
 }
