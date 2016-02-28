@@ -27,11 +27,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>Libraries/ArduinoJson</name>
-			<type>2</type>
-			<locationURI>ArduinoLibPath/ArduinoJson</locationURI>
-		</link>
-		<link>
 			<name>Libraries/EEPROM</name>
 			<type>2</type>
 			<locationURI>ArduinoHardwareLibPath/EEPROM</locationURI>
@@ -64,12 +59,57 @@
 		<link>
 			<name>arduino/core</name>
 			<type>2</type>
-			<locationURI>ArduinoPlatformPath/esp8266</locationURI>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/2.0.0/cores/esp8266</location>
 		</link>
 		<link>
 			<name>arduino/variant</name>
 			<type>2</type>
-			<locationURI>ArduinoPinPath/generic</locationURI>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/2.0.0/variants/generic</location>
+		</link>
+		<link>
+			<name>core/core</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/cores/esp8266</location>
+		</link>
+		<link>
+			<name>core/variant</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/variants/generic</location>
+		</link>
+		<link>
+			<name>libraries/ArduinoOTA</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/2.0.0/libraries/ArduinoOTA</location>
+		</link>
+		<link>
+			<name>libraries/EEPROM</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/EEPROM</location>
+		</link>
+		<link>
+			<name>libraries/ESP8266WebServer</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/ESP8266WebServer</location>
+		</link>
+		<link>
+			<name>libraries/ESP8266WiFi</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/ESP8266WiFi</location>
+		</link>
+		<link>
+			<name>libraries/ESP8266mDNS</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/ESP8266mDNS</location>
+		</link>
+		<link>
+			<name>libraries/SD</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/SD</location>
+		</link>
+		<link>
+			<name>libraries/SPI</name>
+			<type>2</type>
+			<location>/home/sudiv/opt/eclipse_cdt/arduinoPlugin/packages/esp8266/hardware/esp8266/1.6.5-947-g39819f0/libraries/SPI</location>
 		</link>
 	</linkedResources>
 	<variableList>

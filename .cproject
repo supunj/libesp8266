@@ -22,15 +22,23 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WiFi/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/esp8266}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266mDNS}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WebServer}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WebServer/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/EEPROM}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ArduinoJson}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ArduinoJson/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/Time-master}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WebServer}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WebServer/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/EEPROM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266mDNS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ArduinoOTA}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SD}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WiFi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/core/variant}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.883468232" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -39,15 +47,23 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/arduino/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/arduino/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WiFi/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/esp8266}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266mDNS}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WebServer}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ESP8266WebServer/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/EEPROM}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ArduinoJson}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/ArduinoJson/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/Libraries/Time-master}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WebServer}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WebServer/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/EEPROM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266mDNS}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ArduinoOTA}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SD}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/SD/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WiFi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/libraries/ESP8266WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp8266_common/core/variant}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.1638225895" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
@@ -74,5 +90,9 @@
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/esp8266_common"/>
+		</configuration>
+	</storageModule>
 </cproject>

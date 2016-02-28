@@ -10,9 +10,16 @@
 #include <WString.h>
 
 #include "eepromutil.h"
+#include "value_objects.cpp"
 
-enum Sensor {
-	Temperature, Humidity, Motion
+struct Sensors {
+	const String TEMPERATURE = "Temperature";
+	const String HUMIDITY = "Humidity";
+	const String MOTION = "Motion";
+};
+
+struct Readings {
+	const String TEMPERATURE = "Temperature";
 };
 
 class ESP8266Util {
@@ -49,16 +56,13 @@ public:
 	String httpGET(char* host, int port, String uri, const int wait = 10);
 	// call https end point
 	String httpPOST(char* host, int port, String uri, String payload,
-			const int wait = 10);
+			const int wait = 100);
 
 	// write/read data to and from EEPROM
 	void store();
 	String readAll();
 	void clearEEPROM();
 	void eepromStore();
-
-	// Json handling
-	String getJson(Sensor sensor);
 
 	// get NTP date/time
 	static time_t getNTPTime();
@@ -69,6 +73,12 @@ public:
 
 	// converts the IPAddress to String
 	String ipToString(IPAddress ip);
+
+	// get MAC address
+	String getMAC();
+
+	// create event in json format
+	Event* createEvent();
 };
 
 #endif /* ESP8266UTIL_H_ */

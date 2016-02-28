@@ -10,26 +10,22 @@
 
 char* ssid = "MIFI-19B2";
 char* password = "1234567890";
+/*char* ssid = "Supun's mi4i";
+ char* password = "12345678";*/
 const int led = 2;
 const int serial_port = 9200;
 ESP8266Util esp8266(ssid, password, 2, 512);
+Event *ev;
 
 //The setup function is called once at startup of the sketch
 void setup() {
 	Log.start(serial_port);
 	esp8266.start();
-	/*pinMode(BUILTIN_LED, OUTPUT);
-	 digitalWrite(BUILTIN_LED, 0);*/
 	esp8266.wifiConnect();
 	esp8266.startWebServer();
-	//String res1 = esp8266.httpGET("httpbin.org", 80, "/ip", 50);
-	//Serial.print(res1);
-	/*String res2 =
-	 esp8266.httpPOST("httpbin.org", 80, "/post",
-	 "dfsfsdghdsfjghjkdfhgjkdsf475483759483759834752312312hgdkjhfgdgjh&^%#^$^^^@#$@!$#^%!@#$@%^#!@#",
-	 1000);*/
-	//Log.info(res2);
-	//delay(3000);
+
+	Log.info(esp8266.getMAC());
+
 	/*EEPROMUtility.clear();
 	 EEPROMUtility.put("key1", "value1");
 	 Serial.println(EEPROMUtility.get("key1"));*/
@@ -39,5 +35,19 @@ void setup() {
 void loop() {
 	esp8266.mdnsUpdate();
 	esp8266.handleWebClient();
-	//Log.info((String) esp8266.getDateTime());
+	ev = esp8266.createEvent();
+	ev->setSensor(Sensors().HUMIDITY);
+	ev->setHub("My HUB");
+	ev->setUser("supun");
+	Reading rd;
+	rd.setLat(6.801864);
+	rd.setLon(79.8931625);
+	rd.setTimestamp(esp8266.getStrDateTime());
+	ev->addReading(rd);
+
+	String res3 = esp8266.httpPOST("httpbin.org", 80, "/post", ev->toJSON(),
+			1000);
+	delay(5000);
+
+	Log.info(res3);
 }

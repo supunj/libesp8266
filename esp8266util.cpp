@@ -23,6 +23,7 @@ WiFiClient client;
 EEPROMUtil *eepromUtility;
 NTPClient *ntpClient;
 WiFiUDP udp;
+Event *evn;
 
 ESP8266Util::ESP8266Util(char* sid, char* pwd, const int ind_led,
 		const int rom_size) :
@@ -34,7 +35,13 @@ void ESP8266Util::start() {
 	eepromUtility->start();
 	Log.info("EEPROM initialized");
 
+	// create time sync utility
 	ntpClient = new NTPClient();
+
+	// create the global event
+	evn = new Event();
+
+	Log.info("MAC : " + getMAC());
 }
 
 /**
@@ -321,6 +328,19 @@ String ESP8266Util::ipToString(IPAddress ip) {
 	char strIP[24];
 	sprintf(strIP, "%d.%d.%d.%d", ip[0], ip[1], ip[2], ip[3]);
 	return strIP;
+}
+
+String ESP8266Util::getMAC() {
+	return WiFi.macAddress();
+}
+
+Event* ESP8266Util::createEvent() {
+	evn->setSensor("");
+	evn->setHub("");
+	evn->setDevice(getMAC());
+	evn->setUser("");
+	evn->clearReadings();
+	return evn;
 }
 
 ESP8266Util::~ESP8266Util() {
